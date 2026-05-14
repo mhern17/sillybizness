@@ -307,74 +307,8 @@ def make_chart(df, ticker):
     return fig
 
 with st.sidebar:
-    # Recent  storage
-if "recent_s" not in st.session_state:
-    st.session_state.recent_s = []
-
-# Popular quick-select buttons
-st.markdown("### Trending")
-
-trend_cols = st.columns(5)
-
-popular = ["NVDA", "TSLA", "SPY", "AMD", "PLTR"]
-
-for i, stock in enumerate(popular):
-    with trend_cols[i]:
-        if st.button(stock):
-             = stock
-
-st.divider()
-
-# Recent entries section
-st.markdown("### Recent Entries")
-
-for recent in st.session_state.recent_tickers[-5:][::-1]:
-    if st.button(recent, key=f"recent_{recent}"):
-        ticker = recent
     st.header("Analyzer Settings")
-    # Initialize session state
-if "ticker" not in st.session_state:
-    st.session_state.ticker = "AAPL"
-
-if "recent_tickers" not in st.session_state:
-    st.session_state.recent_tickers = []
-
-# Trending buttons
-st.markdown("### Trending")
-
-trend_cols = st.columns(5)
-
-popular = ["NVDA", "TSLA", "SPY", "AMD", "PLTR"]
-
-for i, stock in enumerate(popular):
-    with trend_cols[i]:
-        if st.button(stock):
-            st.session_state.ticker = stock
-
-st.divider()
-
-# Recent entries
-st.markdown("### Recent Entries")
-
-for recent in st.session_state.recent_tickers[-5:][::-1]:
-    if st.button(recent, key=f"recent_{recent}"):
-        st.session_state.ticker = recent
-
-# Main ticker input
-ticker = st.text_input(
-    "Ticker",
-    value=st.session_state.ticker,
-    help="Stock symbol, such as AAPL, NVDA, TSLA, SPY, or AMD."
-).upper().strip()
-
-# Save latest ticker
-st.session_state.ticker = ticker
-
-if ticker and ticker not in st.session_state.recent_tickers:
-    st.session_state.recent_tickers.append(ticker)
-
-if ticker and ticker not in st.session_state.recent_tickers:
-    st.session_state.recent_tickers.append(ticker)
+    ticker = st.text_input("Ticker", value="AAPL", help="Stock symbol, such as AAPL, NVDA, TSLA, SPY, or AMD.").upper().strip()
     period = st.selectbox("History", ["6mo", "1y", "2y", "5y"], index=2, help="How much past price history to analyze.")
     mode = st.selectbox("Trading mode", ["Day Trade", "Swing Trade", "Long-Term"], index=1, help="Changes how the signal is weighted.")
     risk = st.selectbox("Risk profile", ["Conservative", "Balanced", "Aggressive"], index=1, help="Changes stop-loss and take-profit distance.")
