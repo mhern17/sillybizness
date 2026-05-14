@@ -307,9 +307,9 @@ def make_chart(df, ticker):
     return fig
 
 with st.sidebar:
-    # Recent ticker storage
-if "recent_tickers" not in st.session_state:
-    st.session_state.recent_tickers = []
+    # Recent  storage
+if "recent_s" not in st.session_state:
+    st.session_state.recent_s = []
 
 # Popular quick-select buttons
 st.markdown("### Trending")
@@ -321,7 +321,7 @@ popular = ["NVDA", "TSLA", "SPY", "AMD", "PLTR"]
 for i, stock in enumerate(popular):
     with trend_cols[i]:
         if st.button(stock):
-            ticker = stock
+             = stock
 
 st.divider()
 
@@ -332,7 +332,46 @@ for recent in st.session_state.recent_tickers[-5:][::-1]:
     if st.button(recent, key=f"recent_{recent}"):
         ticker = recent
     st.header("Analyzer Settings")
-    ticker = st.text_input("Ticker", value="AAPL").upper().strip()
+    # Initialize session state
+if "ticker" not in st.session_state:
+    st.session_state.ticker = "AAPL"
+
+if "recent_tickers" not in st.session_state:
+    st.session_state.recent_tickers = []
+
+# Trending buttons
+st.markdown("### Trending")
+
+trend_cols = st.columns(5)
+
+popular = ["NVDA", "TSLA", "SPY", "AMD", "PLTR"]
+
+for i, stock in enumerate(popular):
+    with trend_cols[i]:
+        if st.button(stock):
+            st.session_state.ticker = stock
+
+st.divider()
+
+# Recent entries
+st.markdown("### Recent Entries")
+
+for recent in st.session_state.recent_tickers[-5:][::-1]:
+    if st.button(recent, key=f"recent_{recent}"):
+        st.session_state.ticker = recent
+
+# Main ticker input
+ticker = st.text_input(
+    "Ticker",
+    value=st.session_state.ticker,
+    help="Stock symbol, such as AAPL, NVDA, TSLA, SPY, or AMD."
+).upper().strip()
+
+# Save latest ticker
+st.session_state.ticker = ticker
+
+if ticker and ticker not in st.session_state.recent_tickers:
+    st.session_state.recent_tickers.append(ticker)
 
 if ticker and ticker not in st.session_state.recent_tickers:
     st.session_state.recent_tickers.append(ticker)
