@@ -332,7 +332,10 @@ for recent in st.session_state.recent_tickers[-5:][::-1]:
     if st.button(recent, key=f"recent_{recent}"):
         ticker = recent
     st.header("Analyzer Settings")
-    ticker = st.text_input("Ticker", value="AAPL", help="Stock symbol, such as AAPL, NVDA, TSLA, SPY, or AMD.").upper().strip()
+    ticker = st.text_input("Ticker", value="AAPL").upper().strip()
+
+if ticker and ticker not in st.session_state.recent_tickers:
+    st.session_state.recent_tickers.append(ticker)
     period = st.selectbox("History", ["6mo", "1y", "2y", "5y"], index=2, help="How much past price history to analyze.")
     mode = st.selectbox("Trading mode", ["Day Trade", "Swing Trade", "Long-Term"], index=1, help="Changes how the signal is weighted.")
     risk = st.selectbox("Risk profile", ["Conservative", "Balanced", "Aggressive"], index=1, help="Changes stop-loss and take-profit distance.")
